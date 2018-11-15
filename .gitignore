@@ -1,0 +1,7 @@
+*.o
+*.d
+
+/**/generateALL
+/**/sm_version.mk
+/**/*_wrapper
+/**/*_CODE
