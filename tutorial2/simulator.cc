@@ -8,10 +8,8 @@ int main()
     initialize();
     inittutorial2();
 
-    std::ofstream stream("spikes.csv");
-
     std::cout << "Simulating" << std::endl;
-    // Advance time
+    std::ofstream stream("spikes.csv");
     while(t < 1000.0f) {
 #ifdef CPU_ONLY
         stepTimeCPU();

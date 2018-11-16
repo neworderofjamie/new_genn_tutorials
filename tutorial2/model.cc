@@ -21,7 +21,7 @@ void modelDefinition(NNmodel &model)
         0.0,    // 0 - min
         20.0);  // 1 - max
     NeuronModels::Izhikevich::VarValues ikzInit(
-        -65.0,    // 0 - V
+        -65.0,                                      // 0 - V
         initVar<InitVarSnippet::Uniform>(uDist));   // 1 - U
 
     auto *exc = model.addNeuronPopulation<NeuronModels::Izhikevich>("Exc", 8000, izkParams, ikzInit);
