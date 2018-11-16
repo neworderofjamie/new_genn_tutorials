@@ -17,10 +17,10 @@ void modelDefinition(NNmodel &model)
     LIF::ParamValues lifParams(
         1.0,    // 0 - C
         20.0,   // 1 - TauM
-        -49.0,  // 2 - Vrest
+        -60.0,  // 2 - Vrest
         -60,  // 3 - Vreset
         -50.0, // 4 - Vthresh
-        0.0,    // 5 - Ioffset
+        0.55,    // 5 - Ioffset
         5.0);    // 6 - TauRefrac
 
     // LIF initial conditions
