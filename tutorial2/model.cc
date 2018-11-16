@@ -1,7 +1,5 @@
 #include "modelSpec.h"
 
-#include "../extra/lif.h"
-
 void modelDefinition(NNmodel &model)
 {
     GENN_PREFERENCES::autoInitSparseVars = true;
@@ -9,34 +7,33 @@ void modelDefinition(NNmodel &model)
     model.setDT(1.0);
     model.setName("tutorial2");
 
-    InitVarSnippet::Uniform::ParamValues vDist(
-        -60.0,  // 0 - min
-        -50.0);  // 1 - max
+    // Izhikevich model parameters
+    NeuronModels::Izhikevich::ParamValues izkParams(
+        0.02,   // 0 - A
+        0.2,    // 1 - B
+        -65.0,  // 2 - C
+        8.0);   // 3 - D
 
-    // LIF model parameters
-    LIF::ParamValues lifParams(
-        1.0,    // 0 - C
-        20.0,   // 1 - TauM
-        -60.0,  // 2 - Vrest
-        -60,  // 3 - Vreset
-        -50.0, // 4 - Vthresh
-        0.55,    // 5 - Ioffset
-        5.0);    // 6 - TauRefrac
+    // Izhikevich initial conditions
+    InitVarSnippet::Uniform::ParamValues uDist(
+        0.0,    // 0 - min
+        20.0);  // 1 - max
+    NeuronModels::Izhikevich::VarValues ikzInit(
+        -65.0,    // 0 - V
+        initVar<InitVarSnippet::Uniform>(uDist));   // 1 - U
 
-    // LIF initial conditions
-    LIF::VarValues lifInit(
-        initVar<InitVarSnippet::Uniform>(vDist),     // 0 - V
-        0.0);   // 1 - RefracTime
+    model.addNeuronPopulation<NeuronModels::Izhikevich>("Exc", 8000, izkParams, ikzInit);
+    model.addNeuronPopulation<NeuronModels::Izhikevich>("Inh", 2000, izkParams, ikzInit);
 
-    model.addNeuronPopulation<LIF>("Exc", 3200, lifParams, lifInit);
-    model.addNeuronPopulation<LIF>("Inh", 800, lifParams, lifInit);
+    // DC current source parameters
+    CurrentSourceModels::DC::ParamValues currentSourceParamVals(4.0);  // 0 - magnitude
+    model.addCurrentSource<CurrentSourceModels::DC>("ExcStim", "Exc", currentSourceParamVals, {});
+    model.addCurrentSource<CurrentSourceModels::DC>("InhStim", "Inh", currentSourceParamVals, {});
 
-    WeightUpdateModels::StaticPulse::VarValues excSynInitValues(0.162); // 0 - g
-    WeightUpdateModels::StaticPulse::VarValues inhSynInitValues(-0.9); // 0 - g
+    WeightUpdateModels::StaticPulse::VarValues excSynInitValues(0.05);
+    WeightUpdateModels::StaticPulse::VarValues inhSynInitValues(-0.25);
 
-    InitSparseConnectivitySnippet::FixedProbability::ParamValues fixedProb(
-        0.02); // 0 - prob
-
+    InitSparseConnectivitySnippet::FixedProbability::ParamValues fixedProb(0.1); // 0 - prob
     model.addSynapsePopulation<WeightUpdateModels::StaticPulse, PostsynapticModels::DeltaCurr>(
         "Exc_Exc", SynapseMatrixType::RAGGED_GLOBALG, NO_DELAY,
         "Exc", "Exc",

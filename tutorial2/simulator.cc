@@ -25,7 +25,7 @@ int main()
             stream << t << ", " << spike_Exc[i] << std::endl;
         }
         for(unsigned int i = 0; i < spikeCount_Inh; i++) {
-            stream << t << ", " << 3200 + spike_Inh[i] << std::endl;
+            stream << t << ", " << 8000 + spike_Inh[i] << std::endl;
         }
     }
 
