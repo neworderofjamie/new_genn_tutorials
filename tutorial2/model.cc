@@ -3,7 +3,7 @@
 void modelDefinition(NNmodel &model)
 {
     GENN_PREFERENCES::autoInitSparseVars = true;
-    GENN_PREFERENCES::defaultVarMode = VarMode::LOC_DEVICE_INIT_DEVICE;
+    GENN_PREFERENCES::defaultVarMode = VarMode::LOC_HOST_DEVICE_INIT_DEVICE;
     GENN_PREFERENCES::defaultSparseConnectivityMode = VarMode::LOC_DEVICE_INIT_DEVICE;
     initGeNN();
     model.setDT(1.0);
@@ -24,10 +24,8 @@ void modelDefinition(NNmodel &model)
         -65.0,                                      // 0 - V
         initVar<InitVarSnippet::Uniform>(uDist));   // 1 - U
 
-    auto *exc = model.addNeuronPopulation<NeuronModels::Izhikevich>("Exc", 8000, izkParams, ikzInit);
-    auto *inh = model.addNeuronPopulation<NeuronModels::Izhikevich>("Inh", 2000, izkParams, ikzInit);
-    exc->setSpikeVarMode(VarMode::LOC_HOST_DEVICE_INIT_DEVICE);
-    inh->setSpikeVarMode(VarMode::LOC_HOST_DEVICE_INIT_DEVICE);
+    model.addNeuronPopulation<NeuronModels::Izhikevich>("Exc", 8000, izkParams, ikzInit);
+    model.addNeuronPopulation<NeuronModels::Izhikevich>("Inh", 2000, izkParams, ikzInit);
 
     // DC current source parameters
     CurrentSourceModels::DC::ParamValues currentSourceParamVals(4.0);  // 0 - magnitude
