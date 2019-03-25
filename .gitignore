@@ -2,6 +2,10 @@
 *.d
 
 /**/generateALL
-/**/sm_version.mk
 /**/*_wrapper
 /**/*_CODE
+/**/x64
+
+*.vcxproj.user
+*.ilk
+*.pdb
