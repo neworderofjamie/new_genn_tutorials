@@ -2,10 +2,6 @@
 
 void modelDefinition(NNmodel &model)
 {
-    GENN_PREFERENCES::autoInitSparseVars = true;
-    GENN_PREFERENCES::defaultVarMode = VarMode::LOC_HOST_DEVICE_INIT_DEVICE;
-    GENN_PREFERENCES::defaultSparseConnectivityMode = VarMode::LOC_DEVICE_INIT_DEVICE;
-    initGeNN();
     model.setDT(1.0);
     model.setName("tutorial2");
 
@@ -37,29 +33,27 @@ void modelDefinition(NNmodel &model)
 
     InitSparseConnectivitySnippet::FixedProbability::ParamValues fixedProb(0.1); // 0 - prob
     model.addSynapsePopulation<WeightUpdateModels::StaticPulse, PostsynapticModels::DeltaCurr>(
-        "Exc_Exc", SynapseMatrixType::RAGGED_GLOBALG, NO_DELAY,
+        "Exc_Exc", SynapseMatrixType::SPARSE_GLOBALG, NO_DELAY,
         "Exc", "Exc",
         {}, excSynInitValues,
         {}, {},
         initConnectivity<InitSparseConnectivitySnippet::FixedProbabilityNoAutapse>(fixedProb));
     model.addSynapsePopulation<WeightUpdateModels::StaticPulse, PostsynapticModels::DeltaCurr>(
-        "Exc_Inh", SynapseMatrixType::RAGGED_GLOBALG, NO_DELAY,
+        "Exc_Inh", SynapseMatrixType::SPARSE_GLOBALG, NO_DELAY,
         "Exc", "Inh",
         {}, excSynInitValues,
         {}, {},
         initConnectivity<InitSparseConnectivitySnippet::FixedProbability>(fixedProb));
     model.addSynapsePopulation<WeightUpdateModels::StaticPulse, PostsynapticModels::DeltaCurr>(
-        "Inh_Inh", SynapseMatrixType::RAGGED_GLOBALG, NO_DELAY,
+        "Inh_Inh", SynapseMatrixType::SPARSE_GLOBALG, NO_DELAY,
         "Inh", "Inh",
         {}, inhSynInitValues,
         {}, {},
         initConnectivity<InitSparseConnectivitySnippet::FixedProbabilityNoAutapse>(fixedProb));
     model.addSynapsePopulation<WeightUpdateModels::StaticPulse, PostsynapticModels::DeltaCurr>(
-        "Inh_Exc", SynapseMatrixType::RAGGED_GLOBALG, NO_DELAY,
+        "Inh_Exc", SynapseMatrixType::SPARSE_GLOBALG, NO_DELAY,
         "Inh", "Exc",
         {}, inhSynInitValues,
         {}, {},
         initConnectivity<InitSparseConnectivitySnippet::FixedProbability>(fixedProb));
-
-    model.finalize();
 }

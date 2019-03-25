@@ -1,23 +1,20 @@
 #include "tutorial2_CODE/definitions.h"
 #include <fstream>
+#include <iostream>
 
 int main()
 {
     allocateMem();
     std::cout << "Initialising" << std::endl;
     initialize();
-    inittutorial2();
+    initializeSparse();
 
     std::cout << "Simulating" << std::endl;
     std::ofstream stream("spikes.csv");
     while(t < 1000.0f) {
-#ifdef CPU_ONLY
-        stepTimeCPU();
-#else
-        stepTimeGPU();
+        stepTime();
         pullExcCurrentSpikesFromDevice();
         pullInhCurrentSpikesFromDevice();
-#endif
 
         for(unsigned int i = 0; i < spikeCount_Exc; i++) {
             stream << t << ", " << spike_Exc[i] << std::endl;

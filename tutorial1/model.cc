@@ -2,8 +2,6 @@
 
 void modelDefinition(NNmodel &model)
 {
-    GENN_PREFERENCES::autoInitSparseVars = true;
-    initGeNN();
     model.setDT(0.1);
     model.setName("tutorial1");
 
@@ -25,6 +23,4 @@ void modelDefinition(NNmodel &model)
 
     model.addCurrentSource<CurrentSourceModels::DC>("CurrentSource", "Neurons",
                                                     currentSourceParamVals, {});
-
-    model.finalize();
 }

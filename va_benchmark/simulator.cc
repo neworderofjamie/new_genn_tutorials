@@ -9,7 +9,7 @@ int main()
 {
     allocateMem();
     initialize();
-    initva_benchmark();
+    initializeSparse();
 
     // Open CSV output files
     SpikeCSVRecorder spikes("spikes.csv", glbSpkCntE, glbSpkE);
@@ -17,13 +17,9 @@ int main()
     // Loop through timesteps
     while(t < 10000.0f) {
         // Simulate
-#ifndef CPU_ONLY
-        stepTimeGPU();
+        stepTime();
 
         pullECurrentSpikesFromDevice();
-#else
-        stepTimeCPU();
-#endif
 
         spikes.record(t);
     }
