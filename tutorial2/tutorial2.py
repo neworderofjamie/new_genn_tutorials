@@ -2,9 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pygenn import genn_wrapper, genn_model
 
-model = genn_model.GeNNModel("float", "tutorial2_pygenn", enable_debug=False, cpu_only=False)
-model.default_var_mode = genn_wrapper.VarMode_LOC_HOST_DEVICE_INIT_DEVICE
-model.default_sparse_connectivity_mode = genn_wrapper.VarMode_LOC_HOST_DEVICE_INIT_DEVICE
+model = genn_model.GeNNModel("float", "tutorial2_pygenn")
 model.dT = 1.0
 
 izk_params = {"a": 0.02, "b": 0.2, "c": -65.0, "d": 8.0}
@@ -24,25 +22,25 @@ inh = model.add_neuron_population("Inh", 2000, "Izhikevich", izk_params, izk_ini
 model.add_current_source("ExcStim", "DC", "Exc", stim_params, {})
 model.add_current_source("InhStim", "DC", "Inh", stim_params, {})
 
-model.add_synapse_population("Exc_Exc", "RAGGED_GLOBALG", genn_wrapper.NO_DELAY,
+model.add_synapse_population("Exc_Exc", "SPARSE_GLOBALG", genn_wrapper.NO_DELAY,
     exc, exc,
     "StaticPulse", {}, exc_syn_init, {}, {},
     "DeltaCurr", {}, {},
     genn_model.init_connectivity("FixedProbabilityNoAutapse", fixed_prob))
 
-model.add_synapse_population("Exc_Inh", "RAGGED_GLOBALG", genn_wrapper.NO_DELAY,
+model.add_synapse_population("Exc_Inh", "SPARSE_GLOBALG", genn_wrapper.NO_DELAY,
     exc, inh,
     "StaticPulse", {}, exc_syn_init, {}, {},
     "DeltaCurr", {}, {},
     genn_model.init_connectivity("FixedProbability", fixed_prob))
 
-model.add_synapse_population("Inh_Inh", "RAGGED_GLOBALG", genn_wrapper.NO_DELAY,
+model.add_synapse_population("Inh_Inh", "SPARSE_GLOBALG", genn_wrapper.NO_DELAY,
     inh, inh,
     "StaticPulse", {}, inh_syn_init, {}, {},
     "DeltaCurr", {}, {},
     genn_model.init_connectivity("FixedProbabilityNoAutapse", fixed_prob))
 
-model.add_synapse_population("Inh_Exc", "RAGGED_GLOBALG", genn_wrapper.NO_DELAY,
+model.add_synapse_population("Inh_Exc", "SPARSE_GLOBALG", genn_wrapper.NO_DELAY,
     inh, exc,
     "StaticPulse", {}, inh_syn_init, {}, {},
     "DeltaCurr", {}, {},
