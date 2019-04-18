@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pygenn import genn_wrapper, genn_model
 
-model = genn_model.GeNNModel("float", "tutorial1_pygenn", enable_debug=False, cpu_only=False)
+model = genn_model.GeNNModel("float", "tutorial1_pygenn")
 model.dT = 0.1
 
 izk_init = {"V": -65.0,
