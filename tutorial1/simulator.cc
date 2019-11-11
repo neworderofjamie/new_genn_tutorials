@@ -18,8 +18,8 @@ int main()
     // Advance time
     while(t < 200.0f) {
         stepTime();
-        pullNeuronsStateFromDevice();
-        stream << t << "," << VNeurons[0] << "," << VNeurons[1] << "," << VNeurons[2] << "," << VNeurons[3] << std::endl;
+        pullCurrentVNeuronsFromDevice();
+        stream << t << "," << getCurrentVNeurons()[0] << "," << getCurrentVNeurons()[1] << "," << getCurrentVNeurons()[2] << "," << getCurrentVNeurons()[3] << std::endl;
     }
 
     return EXIT_SUCCESS;

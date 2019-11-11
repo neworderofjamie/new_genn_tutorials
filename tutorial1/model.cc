@@ -1,6 +1,6 @@
 #include "modelSpec.h"
 
-void modelDefinition(NNmodel &model)
+void modelDefinition(ModelSpec &model)
 {
     model.setDT(0.1);
     model.setName("tutorial1");

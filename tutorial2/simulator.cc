@@ -16,11 +16,12 @@ int main()
         pullExcCurrentSpikesFromDevice();
         pullInhCurrentSpikesFromDevice();
 
-        for(unsigned int i = 0; i < spikeCount_Exc; i++) {
-            stream << t << ", " << spike_Exc[i] << std::endl;
+        for(unsigned int i = 0; i < getExcCurrentSpikeCount(); i++) {
+            stream << t << ", " << getExcCurrentSpikes()[i] << std::endl;
         }
-        for(unsigned int i = 0; i < spikeCount_Inh; i++) {
-            stream << t << ", " << 8000 + spike_Inh[i] << std::endl;
+
+        for(unsigned int i = 0; i < getInhCurrentSpikeCount(); i++) {
+            stream << t << ", " << 8000 + getInhCurrentSpikes()[i] << std::endl;
         }
     }
 
